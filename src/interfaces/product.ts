@@ -13,6 +13,14 @@ export interface Product {
   responsive: Breakpoint[]
 }
 
+export interface ProductFormInterface {
+  name: string;
+  description: string;
+  price?: number;
+  stock: number;
+  category_id: string;
+}
+
 export interface TableColumns {
   title: string;
   dataIndex?: string;

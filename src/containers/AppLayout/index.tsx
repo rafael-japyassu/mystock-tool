@@ -10,7 +10,8 @@ import {
 
 import './styles.scss'
 import { Link } from 'react-router-dom'
-import Product from '../../pages/app/Product'
+
+import AppRoutes from '../../routes/app'
 
 // const { SubMenu } = Menu
 const { Header, Sider, Content } = Layout
@@ -59,7 +60,7 @@ const AppLayout: React.FC = () => {
           >
             <div className="main-content">
 
-              <Product />
+              <AppRoutes />
             </div>
           </Content>
         </Layout>

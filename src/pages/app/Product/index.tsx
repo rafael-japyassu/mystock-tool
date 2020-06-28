@@ -1,5 +1,6 @@
 /* eslint-disable react/display-name */
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import { Table, Space, Input, Button, Select, Tag, Modal } from 'antd'
 import { Product as ProductService, TableColumns } from '../../../interfaces/product'
 import { notification } from '../../../helpers/notification'
@@ -19,6 +20,7 @@ import './styles.scss'
 const { Option } = Select
 
 const Product: React.FC = () => {
+  const history = useHistory()
   const [products, setProducts] = useState<ProductService[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -76,6 +78,10 @@ const Product: React.FC = () => {
     loadProducts()
     loadCategoriesFilter()
   }, [])
+
+  function newProduct () {
+    history.push('/products/register')
+  }
 
   function showModalDelete (id: string) {
     setShowModal(true)
@@ -158,7 +164,7 @@ const Product: React.FC = () => {
       <div className="product-list-page">
         <div className="product-list-header">
           <h2>Filters</h2>
-          <Button type="primary" icon={ <PlusOutlined /> } >New Product</Button>
+          <Button type="primary" icon={ <PlusOutlined /> } onClick={newProduct}>New Product</Button>
         </div>
         <div className="filter-products">
           <Input.Search
