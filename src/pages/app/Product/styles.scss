@@ -1,0 +1,27 @@
+.main-content {
+
+  .product-list-page  {
+    width: 100%;
+
+    .product-list-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .filter-products {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .input-filter {
+      margin: 5px;
+      width: 300px;
+    }
+
+  }   
+
+}
+

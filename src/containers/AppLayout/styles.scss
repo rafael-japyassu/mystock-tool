@@ -1,0 +1,43 @@
+#app-layout {
+  height: 100%;
+
+  .page-layout {
+    height: 100%;
+
+    .main-content {
+      height: auto;
+      margin: 24px 16px;
+      padding: 24px;
+      background-color: #fff;
+    }
+
+    .trigger {
+      font-size: 18px;
+      line-height: 64px;
+      padding: 0 24px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    
+    .trigger:hover {
+      color: #1890ff;
+    }
+    
+    .logo {
+      display: flex;
+      justify-content: center;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.3);
+      margin: 16px;
+    }
+    
+    .site-layout .site-layout-background {
+      background: #fff;
+      // margin: 24px 16px;
+      padding: 24px;
+    }
+
+
+  }  
+
+}
