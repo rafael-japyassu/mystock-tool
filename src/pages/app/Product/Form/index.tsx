@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React, { useState, useEffect, ChangeEvent } from 'react'
 import { Form, Input, Button, InputNumber, Row, Col, Select } from 'antd'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { load as loadCategories } from '../../../../services/categoryService'
 import { Category } from '../../../../interfaces/category'
 import { notification } from '../../../../helpers/notification'
@@ -11,28 +11,57 @@ import {
   CloseOutlined
 } from '@ant-design/icons'
 
-import './styles.scss'
 import { ProductFormInterface } from '../../../../interfaces/product'
+import { save, find, update } from '../../../../services/productService'
 
+import './styles.scss'
+import { Store } from 'antd/lib/form/interface'
+
+const { useForm } = Form
 const { Option } = Select
 
 const ProductForm: React.FC = () => {
   const history = useHistory()
-  const [product, setProduct] = useState<ProductFormInterface>({
-    name: '',
-    category_id: '',
-    description: '',
-    price: 0,
-    stock: 0
-  })
+  const { id } = useParams()
+  const [form] = useForm()
   const [categories, setCategories] = useState<Category[]>([])
 
   useEffect(() => {
     loadCategoriesFilter()
   }, [])
 
+  useEffect(() => {
+    if (id !== undefined) {
+      loadProduct()
+    }
+  }, [id])
+
   function back () {
     history.goBack()
+  }
+
+  async function loadProduct () {
+    try {
+      const response = await find(id)
+
+      form.setFieldsValue({
+        name: response.data.name,
+        category_id: response.data.category_id,
+        description: response.data.description,
+        stock: response.data.stock,
+        price: response.data.price
+      })
+    } catch (error) {
+      if (error.response === undefined) {
+        notification('Error', 'Internal server error!', 'danger')
+      } else if (error.response.status === 401) {
+        notification('Alerta', error.response.data.message, 'warning')
+      } else if (error.response.status === 400) {
+        notification('Alerta', error.response.data.message, 'warning')
+      } else {
+        notification('Erro', error.response.data.message, 'danger')
+      }
+    }
   }
 
   async function loadCategoriesFilter () {
@@ -44,108 +73,135 @@ const ProductForm: React.FC = () => {
         notification('Error', 'Internal server error!', 'danger')
       } else if (error.response.status === 401) {
         notification('Alerta', error.response.data.message, 'warning')
+      } else if (error.response.status === 400) {
+        notification('Alerta', error.response.data.message, 'warning')
       } else {
         notification('Erro', error.response.data.message, 'danger')
       }
     }
   }
 
-  function updateModel (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) {
-    setProduct({
-      ...product,
-      [e.target.name]: e.target.value
-    })
-  }
+  async function onSave (values: Store) {
+    try {
+      const productFormValue = values as ProductFormInterface
 
-  function updatePrice (value: string | number | undefined) {
-    if (typeof value === 'number') {
-      setProduct({ ...product, price: value })
+      if (id !== undefined) {
+        await update(id, productFormValue)
+        notification('Success', 'Product updated successfully!', 'success')
+      } else {
+        await save(productFormValue)
+        notification('Success', 'Product successfully registered!', 'success')
+      }
+      back()
+    } catch (error) {
+      if (error.response === undefined) {
+        notification('Error', 'Internal server error!', 'danger')
+      } else if (error.response.status === 401) {
+        notification('Alerta', error.response.data.message, 'warning')
+      } else if (error.response.status === 400) {
+        notification('Alerta', error.response.data.message, 'warning')
+      } else {
+        notification('Erro', error.response.data.message, 'danger')
+      }
     }
   }
 
-  function updateStock (value: string | number | undefined) {
-    if (typeof value === 'number') {
-      setProduct({ ...product, stock: value })
+  function checkPrice (rule: any, value: any) {
+    if (value.number > 0) {
+      return Promise.resolve()
+    } else {
+      // eslint-disable-next-line prefer-promise-reject-errors
+      return Promise.reject('Price must be greater than zero!')
     }
-  }
-
-  function onSave () {
-    console.log(product)
   }
 
   return (
     <>
       <div className="product-list-page">
         <div className="product-list-header">
-          <h2>New Product</h2>
+          <h2>
+            {
+              id !== undefined ? 'Edit Product' : 'New Product'
+            }
+          </h2>
           <Button type="primary" icon={ <LeftOutlined />} onClick={back}>Back</Button>
         </div>
         <br/>
         <Form
-          name="basic"
-          initialValues={{ remember: true }}
           layout="vertical"
           onFinish={onSave}
-          // onFinishFailed={onFinishFailed}
+          form={form}
         >
           <Row>
             <Col lg={6} md={12} xs={24} >
               <Form.Item
                 label="Name"
+                required
                 name="name"
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: 'This field is required!' }]}
                 className="input-group-products"
               >
-                <Input
-                  name="name"
-                  value={product.name}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => updateModel(e)}
-                />
+                <Input />
               </Form.Item>
             </Col>
             <Col lg={6} md={12} xs={24} >
               <Form.Item
                 label="Price"
                 name="price"
-                rules={[{ required: true, message: 'Please input your username!', type: 'number', min: 0 }]}
+                required
+                rules={[
+                  { required: true, message: 'This field is required!' },
+                  {
+                    type: 'number',
+                    validator: (rule, value) => {
+                      if (value < 0) {
+                        // eslint-disable-next-line prefer-promise-reject-errors
+                        return Promise.reject('Invalid price')
+                      }
+                      return Promise.resolve()
+                    }
+                  }
+                ]}
                 className="input-group-products"
               >
-                <InputNumber
-                  className="input-price"
-                  type="number"
-                  name="price"
-                  value={product.price}
-                  onChange={(price) => updatePrice(price)}
-                />
+                <InputNumber className="input-price" />
               </Form.Item>
             </Col>
             <Col lg={6} md={12} xs={24} >
               <Form.Item
                 label="Stock"
+                required
                 name="stock"
-                rules={[{ required: true, message: 'Please input your username!', type: 'number', min: 0 }]}
+                rules={[
+                  { required: true, message: 'This field is required!' },
+                  {
+                    type: 'number',
+                    validator: (rule, value) => {
+                      if (value < 0) {
+                        // eslint-disable-next-line prefer-promise-reject-errors
+                        return Promise.reject('Invalid stock quantity!')
+                      }
+                      return Promise.resolve()
+                    }
+                  }
+                ]}
                 className="input-group-products"
               >
                 <InputNumber
                   className="input-price"
-                  type="number"
-                  name="stock"
-                  value={product.stock}
-                  onChange={(stock) => updateStock(stock)}
                 />
               </Form.Item>
             </Col>
             <Col lg={6} md={12} xs={24} >
               <Form.Item
                 label="Category"
+                required
                 name="category_id"
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: 'This field is required!' }]}
               >
                 <Select
                   placeholder="Select a category"
                   allowClear
-                  value={product.category_id}
-                  onChange={(category_id) => setProduct({ ...product, category_id })}
                 >
                   {
                     categories.map(category => (
@@ -160,14 +216,11 @@ const ProductForm: React.FC = () => {
 
           <Form.Item
             label="Description"
+            required
             name="description"
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Input.TextArea
-              name="description"
-              value={product.description}
-              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => updateModel(e)}
-            />
+            <Input.TextArea />
           </Form.Item>
 
           <Form.Item>

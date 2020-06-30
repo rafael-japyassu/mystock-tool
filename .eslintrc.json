@@ -23,7 +23,7 @@
     "react",
     "@typescript-eslint"
   ],
-  "rules": {
+  "rules": { 
     "camelcase": "off",
     "no-undef": "off",
     "no-unused-vars": "off",

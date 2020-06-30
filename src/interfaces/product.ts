@@ -2,6 +2,16 @@ import { Category } from './category'
 import { Breakpoint } from 'antd/lib/_util/responsiveObserve'
 
 export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  category: Category;
+  created_at: Date;
+  updated_at: Date;
+}
+export interface ProductTable {
   key: string;
   id: string;
   name: string;
@@ -28,4 +38,5 @@ export interface TableColumns {
   render?: any;
   responsive?: Breakpoint[];
   width?: string | number;
+  align?: 'left' | 'right' | 'center';
 }
