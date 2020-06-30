@@ -5,12 +5,14 @@ interface IProps {
   deleteProduct: () => void;
   visible: boolean;
   cancel: () => void;
+  title: string;
+  message: string;
 }
 
-const ProductDelete: React.FC<IProps> = ({ deleteProduct, visible, cancel }: IProps) => {
+const ModalDelete: React.FC<IProps> = ({ deleteProduct, visible, cancel, title, message }: IProps) => {
   return (
     <Modal
-      title="Remove Product"
+      title={title}
       visible={visible}
       onOk={deleteProduct}
       okText="Yes"
@@ -18,9 +20,9 @@ const ProductDelete: React.FC<IProps> = ({ deleteProduct, visible, cancel }: IPr
       okButtonProps={{ danger: true }}
       onCancel={cancel}
     >
-        Do you want to remove this product?
+      { message }
     </Modal>
   )
 }
 
-export default ProductDelete
+export default ModalDelete

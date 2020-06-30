@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Layout, Menu, Breadcrumb } from 'antd'
 import {
   MenuUnfoldOutlined,
@@ -9,15 +9,17 @@ import {
 } from '@ant-design/icons'
 
 import './styles.scss'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import AppRoutes from '../../routes/app'
+import MyBreadCrumb from '../../components/MyBreadCrumb'
 
 // const { SubMenu } = Menu
 const { Header, Sider, Content } = Layout
 
 const AppLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState<boolean>(false)
+  const location = useLocation()
 
   return (
     <div id="app-layout">
@@ -31,14 +33,16 @@ const AppLayout: React.FC = () => {
               }
             </h2>
           </div>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={location.pathname.includes('products') ? ['1'] : ['2']}>
             <Menu.Item key="1" icon={<ShoppingCartOutlined />}>
               <Link to="/products">
-              Products
+                Products
               </Link>
             </Menu.Item>
             <Menu.Item key="2" icon={<SettingOutlined />}>
-              Categories
+              <Link to="/categories">
+                Categories
+              </Link>
             </Menu.Item>
             <Menu.Item key="3" icon={<LogoutOutlined />}>
               Log out
@@ -52,10 +56,11 @@ const AppLayout: React.FC = () => {
               onClick: () => setCollapsed(!collapsed)
             })}
           </Header>
-          <Breadcrumb style={{ margin: '16px 16px 0px' }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
+
+          <MyBreadCrumb
+            path={location.pathname}
+          />
+
           <Content
           >
             <div className="main-content">

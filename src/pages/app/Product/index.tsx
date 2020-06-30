@@ -17,7 +17,7 @@ import './styles.scss'
 
 import ProductPageHeader from '../../../components/ProductPageHeader'
 import ProductFilters from '../../../components/ProductFilters'
-import ProductDelete from '../../../components/ProductDelete'
+import ModalDelete from '../../../components/ModalDelete'
 
 const Product: React.FC = () => {
   const history = useHistory()
@@ -30,7 +30,7 @@ const Product: React.FC = () => {
     {
       title: 'Name',
       dataIndex: 'name',
-      key: 'name',
+      key: 'name_column',
       render: (text: string) => <strong>{text}</strong>,
       width: '20%',
       align: 'left'
@@ -38,7 +38,7 @@ const Product: React.FC = () => {
     {
       title: 'Description',
       dataIndex: 'description',
-      key: 'description',
+      key: 'description_column',
       responsive: ['lg'],
       width: '35%',
       align: 'left'
@@ -46,7 +46,7 @@ const Product: React.FC = () => {
     {
       title: 'Price',
       dataIndex: 'price',
-      key: 'price',
+      key: 'price_column',
       render: (price: string) => <>R${price}</>,
       responsive: ['lg', 'md'],
       width: '10%',
@@ -54,7 +54,7 @@ const Product: React.FC = () => {
     },
     {
       title: 'Stock',
-      key: 'stock',
+      key: 'stock_column',
       dataIndex: 'stock',
       responsive: ['lg', 'md'],
       width: '10%',
@@ -67,7 +67,7 @@ const Product: React.FC = () => {
     },
     {
       title: 'Action',
-      key: 'action',
+      key: 'action_column',
       render: (text: string, record: any) => (
         <Space size="middle">
           <Button type="default" size="small" icon={ <EyeOutlined /> } onClick={() => detailProduct(record.id)}>View</Button>
@@ -180,10 +180,12 @@ const Product: React.FC = () => {
         <Table className="product-table" columns={columns} dataSource={products} loading={loader} />
       </div>
 
-      <ProductDelete
+      <ModalDelete
+        title="Remove Product"
         deleteProduct={deleteProduct}
         visible={showModal}
         cancel={() => setShowModal(false)}
+        message="Do you want to remove this product?"
       />
     </>
   )

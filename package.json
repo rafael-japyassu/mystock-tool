@@ -19,7 +19,8 @@
     "react-notifications-component": "^2.4.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "uuidv4": "^6.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
