@@ -1,6 +1,28 @@
 #app-layout {
   height: 100%;
 
+  .custom-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+
+    .user-info {
+      cursor: default;
+      span {
+        font-weight: bold;
+        color: #1976D2;
+        padding-right: 10px;
+      }
+
+      img {
+        height: 42px;
+        margin-right: 10px;
+      }
+    }
+  }
+
   .page-layout {
     height: 100%;
 

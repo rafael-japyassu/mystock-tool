@@ -1,13 +1,16 @@
-import React, { useState, ChangeEvent } from 'react'
+import React, { useState, ChangeEvent, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Input, Form, Button } from 'antd'
-
-import './styles.scss'
 import { Auth } from '../../../interfaces/auth'
 import { session } from '../../../services/sessionService'
 import { notification } from '../../../helpers/notification'
+import AuthContext from '../../../contexts/auth'
+
+import './styles.scss'
 
 const Login: React.FC = () => {
+  const { signin } = useContext(AuthContext)
+
   const [loader, setLoader] = useState<boolean>(false)
   const [auth, setAuth] = useState<Auth>({
     email: '',
@@ -27,7 +30,8 @@ const Login: React.FC = () => {
       const response = await session(auth)
       setTimeout(() => {
         setLoader(false)
-      }, 2000)
+        signin(response.data)
+      }, 1000)
     } catch (error) {
       setLoader(false)
       if (error.response === undefined) {

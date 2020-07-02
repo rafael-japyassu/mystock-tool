@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Layout, Menu, Breadcrumb } from 'antd'
+import React, { useState, useEffect, useContext } from 'react'
+import { Layout, Menu } from 'antd'
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -8,18 +8,29 @@ import {
   LogoutOutlined
 } from '@ant-design/icons'
 
-import './styles.scss'
 import { Link, useLocation } from 'react-router-dom'
+import AuthContext from '../../contexts/auth'
 
 import AppRoutes from '../../routes/app'
 import MyBreadCrumb from '../../components/MyBreadCrumb'
 
-// const { SubMenu } = Menu
+import './styles.scss'
+import ImageProfile from '../../assets/images/man.png'
+
 const { Header, Sider, Content } = Layout
 
 const AppLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState<boolean>(false)
   const location = useLocation()
+  const { logout } = useContext(AuthContext)
+
+  useEffect(() => {
+    console.log(location.pathname.includes('products'))
+  }, [location])
+
+  function logoutApp () {
+    logout()
+  }
 
   return (
     <div id="app-layout">
@@ -33,7 +44,7 @@ const AppLayout: React.FC = () => {
               }
             </h2>
           </div>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={location.pathname.includes('products') ? ['1'] : ['2']}>
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={location.pathname.includes('products') ? ['2'] : ['1']}>
             <Menu.Item key="1" icon={<ShoppingCartOutlined />}>
               <Link to="/products">
                 Products
@@ -44,17 +55,21 @@ const AppLayout: React.FC = () => {
                 Categories
               </Link>
             </Menu.Item>
-            <Menu.Item key="3" icon={<LogoutOutlined />}>
+            <Menu.Item key="3" icon={<LogoutOutlined />} onClick={logout}>
               Log out
             </Menu.Item>
           </Menu>
         </Sider>
         <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 0 }}>
+          <Header className="site-layout-background custom-header" style={{ padding: 0 }}>
             {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
               className: 'trigger',
               onClick: () => setCollapsed(!collapsed)
             })}
+            <div className="user-info">
+              <img src={ImageProfile} alt="profile"/>
+              <span>{ localStorage.getItem('user_app') }</span>
+            </div>
           </Header>
 
           <MyBreadCrumb
