@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Table, Space, Button, Tag, Pagination } from 'antd'
 import { TableColumns, Product as ProductService, PaginationParams } from '../../../interfaces/product'
@@ -22,6 +22,7 @@ import ProductFilters from '../../../components/ProductFilters'
 import ModalDelete from '../../../components/ModalDelete'
 
 import ProductCard from './Card'
+import AuthContext from '../../../contexts/auth'
 
 const Product: React.FC = () => {
   const history = useHistory()
@@ -32,6 +33,7 @@ const Product: React.FC = () => {
   const [display, setDisplay] = useState<number>(1)
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [totalItems, setTotalItems] = useState<number>(0)
+  const { logout } = useContext(AuthContext)
 
   const columns: TableColumns[] = [
     {
@@ -118,9 +120,9 @@ const Product: React.FC = () => {
       if (error.response === undefined) {
         notification('Error', 'Internal server error!', 'danger')
       } else if (error.response.status === 401) {
-        notification('Alerta', error.response.data.message, 'warning')
+        notification('Alert', error.response.data.message, 'warning')
       } else {
-        notification('Erro', error.response.data.message, 'danger')
+        notification('Error', error.response.data.message, 'danger')
       }
     }
   }
@@ -157,7 +159,8 @@ const Product: React.FC = () => {
       if (error.response === undefined) {
         notification('Error', 'Internal server error!', 'danger')
       } else if (error.response.status === 401) {
-        notification('Alerta', error.response.data.message, 'warning')
+        notification('Alert', error.response.data.message, 'warning')
+        logout()
       } else {
         notification('Erro', error.response.data.message, 'danger')
       }

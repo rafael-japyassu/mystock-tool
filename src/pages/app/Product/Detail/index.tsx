@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Descriptions } from 'antd'
 import { useHistory, useParams } from 'react-router-dom'
 import { notification } from '../../../../helpers/notification'
@@ -15,11 +15,13 @@ import moment from 'moment'
 import './styles.scss'
 
 import ProductPageHeader from '../../../../components/ProductPageHeader'
+import AuthContext from '../../../../contexts/auth'
 
 const ProductDetail: React.FC = () => {
   const history = useHistory()
   const { id } = useParams()
   const [product, setProduct] = useState<Product>()
+  const { logout } = useContext(AuthContext)
 
   useEffect(() => {
     if (id !== undefined) {
@@ -47,11 +49,12 @@ const ProductDetail: React.FC = () => {
       if (error.response === undefined) {
         notification('Error', 'Internal server error!', 'danger')
       } else if (error.response.status === 401) {
-        notification('Alerta', error.response.data.message, 'warning')
+        notification('Alert', error.response.data.message, 'warning')
+        logout()
       } else if (error.response.status === 400) {
-        notification('Alerta', error.response.data.message, 'warning')
+        notification('Alert', error.response.data.message, 'warning')
       } else {
-        notification('Erro', error.response.data.message, 'danger')
+        notification('Error', error.response.data.message, 'danger')
       }
     }
   }

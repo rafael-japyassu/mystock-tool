@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Table, Space, Button } from 'antd'
 import { CategoryTable } from '../../../interfaces/category'
@@ -17,6 +17,7 @@ import './styles.scss'
 
 import ProductPageHeader from '../../../components/ProductPageHeader'
 import ModalDelete from '../../../components/ModalDelete'
+import AuthContext from '../../../contexts/auth'
 
 const Category: React.FC = () => {
   const history = useHistory()
@@ -24,6 +25,7 @@ const Category: React.FC = () => {
   const [loader, setLoader] = useState<boolean>(false)
   const [showModal, setShowModal] = useState<boolean>(false)
   const [categorySelect, setCategorySelect] = useState<string>('')
+  const { logout } = useContext(AuthContext)
 
   const columns: TableColumns[] = [
     {
@@ -93,9 +95,10 @@ const Category: React.FC = () => {
       if (error.response === undefined) {
         notification('Error', 'Internal server error!', 'danger')
       } else if (error.response.status === 401) {
-        notification('Alerta', error.response.data.message, 'warning')
+        notification('Alert', error.response.data.message, 'warning')
+        logout()
       } else {
-        notification('Erro', error.response.data.message, 'danger')
+        notification('Error', error.response.data.message, 'danger')
       }
     }
   }

@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { Form, Input, Button, Row, Col } from 'antd'
 import { useHistory, useParams } from 'react-router-dom'
 import { save, update, find } from '../../../../services/categoryService'
@@ -10,10 +10,9 @@ import {
   CloseOutlined
 } from '@ant-design/icons'
 
-import { ProductFormInterface } from '../../../../interfaces/product'
-
 import './styles.scss'
 import { Store } from 'antd/lib/form/interface'
+import AuthContext from '../../../../contexts/auth'
 
 const { useForm } = Form
 
@@ -21,6 +20,7 @@ const CategoryForm: React.FC = () => {
   const history = useHistory()
   const { id } = useParams()
   const [form] = useForm()
+  const { logout } = useContext(AuthContext)
 
   useEffect(() => {
     if (id !== undefined) {
@@ -43,9 +43,10 @@ const CategoryForm: React.FC = () => {
       if (error.response === undefined) {
         notification('Error', 'Internal server error!', 'danger')
       } else if (error.response.status === 401) {
-        notification('Alerta', error.response.data.message, 'warning')
+        notification('Alert', error.response.data.message, 'warning')
+        logout()
       } else if (error.response.status === 400) {
-        notification('Alerta', error.response.data.message, 'warning')
+        notification('Alert', error.response.data.message, 'warning')
       } else {
         notification('Erro', error.response.data.message, 'danger')
       }
@@ -67,9 +68,10 @@ const CategoryForm: React.FC = () => {
       if (error.response === undefined) {
         notification('Error', 'Internal server error!', 'danger')
       } else if (error.response.status === 401) {
-        notification('Alerta', error.response.data.message, 'warning')
+        notification('Alert', error.response.data.message, 'warning')
+        logout()
       } else if (error.response.status === 400) {
-        notification('Alerta', error.response.data.message, 'warning')
+        notification('Alert', error.response.data.message, 'warning')
       } else {
         notification('Erro', error.response.data.message, 'danger')
       }

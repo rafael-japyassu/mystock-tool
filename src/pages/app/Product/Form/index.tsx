@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Form, Input, Button, InputNumber, Row, Col, Select } from 'antd'
 import { useHistory, useParams } from 'react-router-dom'
 import { load as loadCategories } from '../../../../services/categoryService'
@@ -16,6 +16,7 @@ import { save, find, update } from '../../../../services/productService'
 
 import './styles.scss'
 import { Store } from 'antd/lib/form/interface'
+import AuthContext from '../../../../contexts/auth'
 
 const { useForm } = Form
 const { Option } = Select
@@ -25,6 +26,7 @@ const ProductForm: React.FC = () => {
   const { id } = useParams()
   const [form] = useForm()
   const [categories, setCategories] = useState<Category[]>([])
+  const { logout } = useContext(AuthContext)
 
   useEffect(() => {
     loadCategoriesFilter()
@@ -72,7 +74,8 @@ const ProductForm: React.FC = () => {
       if (error.response === undefined) {
         notification('Error', 'Internal server error!', 'danger')
       } else if (error.response.status === 401) {
-        notification('Alerta', error.response.data.message, 'warning')
+        notification('Alert', error.response.data.message, 'warning')
+        logout()
       } else if (error.response.status === 400) {
         notification('Alerta', error.response.data.message, 'warning')
       } else {
@@ -98,6 +101,7 @@ const ProductForm: React.FC = () => {
         notification('Error', 'Internal server error!', 'danger')
       } else if (error.response.status === 401) {
         notification('Alerta', error.response.data.message, 'warning')
+        logout()
       } else if (error.response.status === 400) {
         notification('Alerta', error.response.data.message, 'warning')
       } else {
