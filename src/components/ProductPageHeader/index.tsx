@@ -1,11 +1,6 @@
 import React from 'react'
 import { Button } from 'antd'
 
-import {
-  PlusOutlined,
-  ReloadOutlined
-} from '@ant-design/icons'
-
 interface IProps {
   title?: string;
 

@@ -1,0 +1,42 @@
+.product-card {
+  margin: 10px 0;
+
+  .ant-card-body {
+    padding: 12px;
+  }
+
+  .product-card-body {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+
+    .product-card-title {
+      width: 20%;
+    }
+
+    .product-card-description {
+      width: 35%;
+      padding: 0px 10px;
+      margin-bottom: 6px;
+    }
+    
+    .product-card-price {
+      width: 15%;
+      padding: 0px 10px;
+      margin-bottom: 6px;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .product-card-stock {
+      width: 15%;
+    }
+    
+    .product-card-actions {
+      width: 15%;
+    }
+
+  }
+
+}

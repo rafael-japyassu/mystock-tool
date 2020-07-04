@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Breadcrumb } from 'antd'
 import { isUuid } from 'uuidv4'
 
@@ -9,11 +9,6 @@ interface IProps {
 }
 
 const MyBreadCrumb: React.FC<IProps> = ({ path }: IProps) => {
-  useEffect(() => {
-    const list = path.split('/')
-    console.log(list)
-  }, [path])
-
   const formatWord = (word: string) => {
     if (isUuid(word)) return word
     return word.charAt(0).toUpperCase() + word.slice(1)

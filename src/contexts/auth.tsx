@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react'
+import React, { createContext, useState } from 'react'
 import { UserLogged, UserSession } from '../interfaces/user'
 import { setHeaders } from '../services/defaultService'
 

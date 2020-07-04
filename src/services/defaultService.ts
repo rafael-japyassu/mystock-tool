@@ -22,7 +22,7 @@ export const resetDefaultHeaders = () => {
 export const getRequest = async (
   url: string,
   headersRequest = headers,
-  params = null
+  params: any = null
 ) => api.get(url, { headers: headersRequest, params })
 
 /*

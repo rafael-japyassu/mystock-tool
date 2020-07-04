@@ -8,8 +8,8 @@ export interface Product {
   price: number;
   stock: number;
   category: Category;
-  created_at: Date;
-  updated_at: Date;
+  created_at?: Date;
+  updated_at?: Date;
 }
 export interface ProductTable {
   key: string;
@@ -39,4 +39,12 @@ export interface TableColumns {
   responsive?: Breakpoint[];
   width?: string | number;
   align?: 'left' | 'right' | 'center';
+}
+
+export interface PaginationParams {
+  name: string;
+  description: string;
+  category_id: string;
+  size: number;
+  page: number;
 }

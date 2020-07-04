@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Table, Space, Button, Tag, Modal } from 'antd'
+import { Table, Space, Button } from 'antd'
 import { CategoryTable } from '../../../interfaces/category'
 import { TableColumns } from '../../../interfaces/product'
 import { notification } from '../../../helpers/notification'

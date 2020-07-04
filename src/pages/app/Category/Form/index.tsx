@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { useState, useEffect, ChangeEvent } from 'react'
+import React, { useEffect } from 'react'
 import { Form, Input, Button, Row, Col } from 'antd'
 import { useHistory, useParams } from 'react-router-dom'
 import { save, update, find } from '../../../../services/categoryService'

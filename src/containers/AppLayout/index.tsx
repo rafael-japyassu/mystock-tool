@@ -24,14 +24,6 @@ const AppLayout: React.FC = () => {
   const location = useLocation()
   const { logout } = useContext(AuthContext)
 
-  useEffect(() => {
-    console.log(location.pathname.includes('products'))
-  }, [location])
-
-  function logoutApp () {
-    logout()
-  }
-
   return (
     <div id="app-layout">
       <Layout className="page-layout">

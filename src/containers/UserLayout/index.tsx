@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Card, Input, Form, Button } from 'antd'
+import { Row, Col } from 'antd'
 
 import './styles.scss'
 import UserRoutes from '../../routes/user'

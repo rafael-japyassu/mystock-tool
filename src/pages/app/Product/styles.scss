@@ -16,6 +16,35 @@
       flex-direction: row;
     }
 
+    .product-table {
+      margin-top: 10px;
+    }
+
+    .product-cards {
+      margin-top: 10px;
+    }
+
+    .display-mode {
+      margin-top: 10px;
+
+      .display-button {
+        font-size: 16px;
+        margin-right: 10px;
+        transition: 0.3s;
+      }
+
+      .display-button:hover {
+        cursor: pointer;
+        color: #1976D2;
+      
+      }
+
+      .display-button-active {
+        color: #1976D2;
+      }
+
+    }
+
     .input-filter {
       margin: 5px;
       width: 300px;

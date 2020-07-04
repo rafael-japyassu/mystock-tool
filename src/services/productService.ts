@@ -1,12 +1,17 @@
 import { defaultHeaders } from './api'
 import { getRequest, deleteRequest, postRequest, putRequest } from './defaultService'
-import { ProductFormInterface } from '../interfaces/product'
+import { ProductFormInterface, PaginationParams } from '../interfaces/product'
 
 const URL = '/products'
 
 export const load = async (
   headers = defaultHeaders
 ) => getRequest(`${URL}`, headers)
+
+export const loadPaginated = async (
+  params: PaginationParams | null | undefined,
+  headers = defaultHeaders
+) => getRequest(`${URL}/pagination`, headers, params)
 
 export const find = async (
   id: string,

@@ -26,9 +26,8 @@ const SignUp: React.FC = () => {
   async function onSignup () {
     setLoader(true)
     try {
-      const response = await create(user)
+      await create(user)
       notification('Success', 'Account successfully created!', 'success')
-      // console.log(response)
       setTimeout(() => {
         setLoader(false)
       }, 2000)
