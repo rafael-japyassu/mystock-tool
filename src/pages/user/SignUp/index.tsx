@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Card, Input, Form, Button } from 'antd'
 import { notification } from '../../../helpers/notification'
 import { User } from '../../../interfaces/user'
@@ -8,6 +8,7 @@ import { create } from '../../../services/userService'
 import './styles.scss'
 
 const SignUp: React.FC = () => {
+  const history = useHistory()
   const [loader, setLoader] = useState<boolean>(false)
   const [user, setUser] = useState<User>({
     name: '',
@@ -28,6 +29,7 @@ const SignUp: React.FC = () => {
     try {
       await create(user)
       notification('Success', 'Account successfully created!', 'success')
+      history.push('/login')
       setTimeout(() => {
         setLoader(false)
       }, 2000)
@@ -36,9 +38,9 @@ const SignUp: React.FC = () => {
       if (error.response === undefined) {
         notification('Error', 'Internal server error!', 'danger')
       } else if (error.response.status === 400) {
-        notification('Alerta', error.response.data.message, 'warning')
+        notification('Alert', error.response.data.message, 'warning')
       } else {
-        notification('Erro', error.response.data.message, 'danger')
+        notification('Error', error.response.data.message, 'danger')
       }
     }
   }

@@ -37,9 +37,9 @@ const Login: React.FC = () => {
       if (error.response === undefined) {
         notification('Error', 'Internal server error!', 'danger')
       } else if (error.response.status === 401) {
-        notification('Alerta', error.response.data.message, 'warning')
+        notification('Alert', error.response.data.message, 'warning')
       } else {
-        notification('Erro', error.response.data.message, 'danger')
+        notification('Error', error.response.data.message, 'danger')
       }
     }
   }
